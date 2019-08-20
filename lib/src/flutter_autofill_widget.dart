@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/widgets.dart';
-
-import 'flutter_autofill.dart';
+part of flutter_autofill;
 
 class Autofill extends StatefulWidget {
   final Widget child;

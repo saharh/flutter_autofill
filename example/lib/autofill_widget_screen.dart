@@ -1,7 +1,6 @@
 //Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => AddressInputPage(currentOffer, _address)));
 
 import 'package:flutter/material.dart';
-import 'package:flutter_autofill/autofill_widget.dart';
 import 'package:flutter_autofill/flutter_autofill.dart';
 
 class AutofillWidgetScreen extends StatelessWidget {

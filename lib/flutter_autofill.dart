@@ -67,6 +67,14 @@ class FlutterAutofill {
     return _afTextSC.stream.where((data) => data["id"] == id).map((data) => data["value"]);
   }
 
+  static Future<void> cancel() async {
+    await _channel.invokeMethod('cancel');
+  }
+
+  static Future<void> commit() async {
+    await _channel.invokeMethod('commit');
+  }
+
   static Future<bool> _updateWidgetCoordinates(BuildContext context, String id, GlobalKey key) async {
     if (key.currentState?.mounted != true) {
       return false;

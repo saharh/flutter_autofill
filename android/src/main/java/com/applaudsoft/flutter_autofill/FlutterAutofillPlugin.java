@@ -63,9 +63,29 @@ public class FlutterAutofillPlugin implements MethodCallHandler {
             Map<String, ?> args = call.arguments();
             notifyFocus(args);
             result.success(null);
+        } else if (call.method.equals("cancel")) {
+            handleCancel();
+            result.success(null);
+        } else if (call.method.equals("commit")) {
+            handleCommit();
+            result.success(null);
         } else {
             result.notImplemented();
         }
+    }
+
+    private void handleCancel() {
+        if (autoFillUnavailable()) {
+            return;
+        }
+        afm.cancel();
+    }
+
+    private void handleCommit() {
+        if (autoFillUnavailable()) {
+            return;
+        }
+        afm.commit();
     }
 
     private void init() {

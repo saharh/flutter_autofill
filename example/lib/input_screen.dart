@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_autofill/flutter_autofill.dart';
 
+import 'complete_screen.dart';
+
 class InputScreen extends StatefulWidget {
   @override
   _InputScreenState createState() => _InputScreenState();
@@ -29,6 +31,8 @@ class _InputScreenState extends State<InputScreen> {
   TextEditingController _ccExpDateController = TextEditingController();
   final GlobalKey _ccExpDateKey = GlobalKey();
   final FocusNode _ccExpDateFocus = FocusNode();
+
+  bool commited = false;
 
   @override
   void initState() {
@@ -88,84 +92,96 @@ class _InputScreenState extends State<InputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plugin example app'),
+        title: const Text('Input Screen'),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 32.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: "Dummy input to lose focus from other fields", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-                autocorrect: false,
-                textInputAction: TextInputAction.done,
+      body: WillPopScope(
+        onWillPop: () async {
+          if (!commited) {
+            await FlutterAutofill.cancel();
+          }
+          return true;
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: "Dummy input to lose focus from other fields", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                  style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                  autocorrect: false,
+                  textInputAction: TextInputAction.done,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 52.0),
-              child: TextField(
-                focusNode: _emailFocus,
-                key: _emailKey,
-                controller: _emailController,
-                decoration:
-                    InputDecoration(hintText: "Please enter your email number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-                autocorrect: false,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                maxLines: 1,
+              Padding(
+                padding: const EdgeInsets.only(top: 52.0),
+                child: TextField(
+                  focusNode: _emailFocus,
+                  key: _emailKey,
+                  controller: _emailController,
+                  decoration:
+                      InputDecoration(hintText: "Please enter your email", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                  style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                  autocorrect: false,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  maxLines: 1,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 52.0),
-              child: TextField(
-                focusNode: _phoneNumFocus,
-                key: _phoneNumKey,
-                controller: _phoneNumController,
-                decoration:
-                    InputDecoration(hintText: "Please enter your phone number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-                autocorrect: false,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-                maxLines: 1,
+              Padding(
+                padding: const EdgeInsets.only(top: 52.0),
+                child: TextField(
+                  focusNode: _phoneNumFocus,
+                  key: _phoneNumKey,
+                  controller: _phoneNumController,
+                  decoration:
+                      InputDecoration(hintText: "Please enter your phone number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                  style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                  autocorrect: false,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  maxLines: 1,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 52.0),
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    focusNode: _ccNumFocus,
-                    key: _ccNumKey,
-                    controller: _ccNumController,
-                    decoration:
-                        InputDecoration(hintText: "Please enter your card number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
-                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-                    autocorrect: false,
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    maxLines: 1,
-                  ),
-                  TextField(
-                    focusNode: _ccExpDateFocus,
-                    key: _ccExpDateKey,
-                    controller: _ccExpDateController,
-                    decoration:
-                        InputDecoration(hintText: "Please enter your card exp. date", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
-                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
-                    autocorrect: false,
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    maxLines: 1,
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 52.0),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      focusNode: _ccNumFocus,
+                      key: _ccNumKey,
+                      controller: _ccNumController,
+                      decoration:
+                          InputDecoration(hintText: "Please enter your card number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                      style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                      autocorrect: false,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      maxLines: 1,
+                    ),
+                    TextField(
+                      focusNode: _ccExpDateFocus,
+                      key: _ccExpDateKey,
+                      controller: _ccExpDateController,
+                      decoration: InputDecoration(
+                          hintText: "Please enter your card exp. date", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                      style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                      autocorrect: false,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: RaisedButton(child: Text("Submit"), onPressed: _onSubmit),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -178,5 +194,12 @@ class _InputScreenState extends State<InputScreen> {
     _phoneNumController.dispose();
     _emailController.dispose();
     super.dispose();
+  }
+
+  void _onSubmit() {
+    FlutterAutofill.commit();
+    commited = true;
+    Navigator.pop(context);
+    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => CompleteScreen()));
   }
 }

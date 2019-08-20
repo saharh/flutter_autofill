@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'input_screen.dart';
+import 'menu_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +12,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: InputScreen());
+    return MaterialApp(home: MenuScreen());
   }
 }

@@ -3,10 +3,10 @@ part of flutter_autofill;
 class Autofill extends StatefulWidget {
   final Widget child;
   List<String> autofillHints;
-  final ValueChanged<dynamic> onValueChanged;
+  final ValueChanged<dynamic> onAutofilled;
   final int autofillType;
 
-  Autofill({@required this.child, @required this.autofillHints, @required this.onValueChanged, @required this.autofillType});
+  Autofill({@required this.child, @required this.autofillHints, @required this.onAutofilled, @required this.autofillType});
 
   @override
   State<StatefulWidget> createState() => _AutofillState();
@@ -38,7 +38,7 @@ class _AutofillState extends State<Autofill> {
     String id = 'af_widget${++incrementingID}';
     Stream stream = await FlutterAutofill.registerWidget(context, id, _afFocus, _afKey, widget.autofillHints, widget.autofillType);
     _subscription = stream?.listen((afValue) {
-      widget.onValueChanged(afValue);
+      widget.onAutofilled(afValue);
     });
   }
 

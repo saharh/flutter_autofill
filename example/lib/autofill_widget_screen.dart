@@ -23,7 +23,7 @@ class AutofillWidgetScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 60, horizontal: 30),
               child: Autofill(
-                onValueChanged: (val) {
+                onAutofilled: (val) {
                   _emailController.value = TextEditingValue(text: val, selection: TextSelection.fromPosition(TextPosition(offset: val.length)));
                 },
                 autofillHints: [FlutterAutofill.AUTOFILL_HINT_EMAIL_ADDRESS],

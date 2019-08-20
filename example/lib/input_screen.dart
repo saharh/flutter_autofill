@@ -32,6 +32,7 @@ class _InputScreenState extends State<InputScreen> {
   final GlobalKey _ccExpDateKey = GlobalKey();
   final FocusNode _ccExpDateFocus = FocusNode();
 
+  StreamSubscription _emailSub, _phoneSub, _ccNumSub, _ccExpDateSub;
   bool commited = false;
 
   @override
@@ -45,7 +46,7 @@ class _InputScreenState extends State<InputScreen> {
 
     Stream emailStream = await FlutterAutofill.registerWidget(
         context, ID_EMAIL_INPUT, _emailFocus, _emailKey, [FlutterAutofill.AUTOFILL_HINT_EMAIL_ADDRESS], FlutterAutofill.AUTOFILL_TYPE_TEXT);
-    emailStream?.listen((text) {
+    _emailSub = emailStream?.listen((text) {
       setState(() {
         _emailController.value = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
       });
@@ -53,7 +54,7 @@ class _InputScreenState extends State<InputScreen> {
 
     Stream phoneNumStream = await FlutterAutofill.registerWidget(
         context, ID_PHONE_NUM_INPUT, _phoneNumFocus, _phoneNumKey, [FlutterAutofill.AUTOFILL_HINT_PHONE], FlutterAutofill.AUTOFILL_TYPE_TEXT);
-    phoneNumStream?.listen((text) {
+    _phoneSub = phoneNumStream?.listen((text) {
       setState(() {
         _phoneNumController.value = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
       });
@@ -61,7 +62,7 @@ class _InputScreenState extends State<InputScreen> {
 
     Stream ccNumStream = await FlutterAutofill.registerWidget(
         context, ID_CC_NUM_INPUT, _ccNumFocus, _ccNumKey, [FlutterAutofill.AUTOFILL_HINT_CREDIT_CARD_NUMBER], FlutterAutofill.AUTOFILL_TYPE_TEXT);
-    ccNumStream?.listen((text) {
+    _ccNumSub = ccNumStream?.listen((text) {
       setState(() {
         _ccNumController.value = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
       });
@@ -69,7 +70,7 @@ class _InputScreenState extends State<InputScreen> {
 
     Stream ccExpDateStream = await FlutterAutofill.registerWidget(context, ID_CC_EXP_DATE_INPUT, _ccExpDateFocus, _ccExpDateKey,
         [FlutterAutofill.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE], FlutterAutofill.AUTOFILL_TYPE_DATE);
-    ccExpDateStream?.listen((value) {
+    _ccExpDateSub = ccExpDateStream?.listen((value) {
       DateTime expDate = DateTime.fromMillisecondsSinceEpoch(value);
       String text = "${expDate.year.toString()}-${expDate.month.toString().padLeft(2, '0')}-${expDate.day.toString().padLeft(2, '0')}";
       setState(() {
@@ -121,8 +122,7 @@ class _InputScreenState extends State<InputScreen> {
                   focusNode: _emailFocus,
                   key: _emailKey,
                   controller: _emailController,
-                  decoration:
-                      InputDecoration(hintText: "Please enter your email", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
+                  decoration: InputDecoration(hintText: "Please enter your email", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
                   style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
                   autocorrect: false,
                   keyboardType: TextInputType.text,
@@ -193,6 +193,10 @@ class _InputScreenState extends State<InputScreen> {
     _emailFocus.dispose();
     _phoneNumController.dispose();
     _emailController.dispose();
+    _emailSub?.cancel();
+    _phoneSub?.cancel();
+    _ccNumSub?.cancel();
+    _ccExpDateSub?.cancel();
     super.dispose();
   }
 

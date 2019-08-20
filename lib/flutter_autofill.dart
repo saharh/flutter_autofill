@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 
 class FlutterAutofill {
   static const MethodChannel _channel = const MethodChannel('flutter_autofill');
-  static StreamController __afTextSC;
+  static StreamController _textStreamController = StreamController.broadcast();
   static bool _registeredTextListener = false;
 
   static const _AF_CHANNEL = "AF_CHANNEL";
@@ -32,17 +32,8 @@ class FlutterAutofill {
   static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR = "creditCardExpirationYear";
   static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY = "creditCardExpirationDay";
 
-  static StreamController get _afTextSC {
-    if (__afTextSC == null) {
-      __afTextSC = StreamController.broadcast(onCancel: () {
-        __afTextSC.close();
-      });
-    }
-    return __afTextSC;
-  }
-
   static Stream<dynamic> get textStream {
-    return _afTextSC.stream;
+    return _textStreamController.stream;
   }
 
   static Future<Stream<dynamic>> registerWidget(
@@ -64,7 +55,7 @@ class FlutterAutofill {
       "sensitive_data": sensitiveData,
     });
     await _updateWidgetCoordinates(context, id, key);
-    return _afTextSC.stream.where((data) => data["id"] == id).map((data) => data["value"]);
+    return _textStreamController.stream.where((data) => data["id"] == id).map((data) => data["value"]);
   }
 
   static Future<void> cancel() async {
@@ -119,7 +110,7 @@ class FlutterAutofill {
         final buffer = message.buffer;
         final decodedStr = utf8.decode(buffer.asUint8List());
         var decodedJSON = jsonDecode(decodedStr);
-        _afTextSC.add(decodedJSON);
+        _textStreamController.add(decodedJSON);
         return null;
       });
       _registeredTextListener = true;

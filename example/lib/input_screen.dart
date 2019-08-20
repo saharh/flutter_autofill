@@ -200,8 +200,8 @@ class _InputScreenState extends State<InputScreen> {
     super.dispose();
   }
 
-  void _onSubmit() {
-    FlutterAutofill.commit();
+  void _onSubmit() async {
+    await FlutterAutofill.commit();
     commited = true;
     Navigator.pop(context);
     Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => CompleteScreen()));

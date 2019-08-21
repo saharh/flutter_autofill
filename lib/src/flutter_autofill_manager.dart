@@ -33,7 +33,7 @@ class FlutterAutofill {
 
   static Future<Stream<dynamic>> registerWidget(
       BuildContext context, String id, FocusNode focusNode, GlobalKey key, List<String> autofillHints, int autofillType,
-      {bool editable = true, bool sensitiveData = true}) async {
+      {TextEditingController textController, bool editable = true, bool sensitiveData = true}) async {
     if (!Platform.isAndroid) {
       return null;
     }
@@ -48,6 +48,12 @@ class FlutterAutofill {
       "autofill_type": autofillType,
       "editable": editable,
       "sensitive_data": sensitiveData,
+    });
+    textController?.addListener(() {
+      _channel.invokeMethod('updateWidgetValue', {
+        "id": id,
+        "value": textController.text,
+      });
     });
     await _updateWidgetCoordinates(context, id, key);
     return _textStreamController.stream.where((data) => data["id"] == id).map((data) => data["value"]);

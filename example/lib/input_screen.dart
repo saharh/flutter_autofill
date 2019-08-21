@@ -45,7 +45,8 @@ class _InputScreenState extends State<InputScreen> {
     if (!mounted) return;
 
     Stream emailStream = await FlutterAutofill.registerWidget(
-        context, ID_EMAIL_INPUT, _emailFocus, _emailKey, [FlutterAutofill.AUTOFILL_HINT_EMAIL_ADDRESS], FlutterAutofill.AUTOFILL_TYPE_TEXT);
+        context, ID_EMAIL_INPUT, _emailFocus, _emailKey, [FlutterAutofill.AUTOFILL_HINT_EMAIL_ADDRESS], FlutterAutofill.AUTOFILL_TYPE_TEXT,
+        textController: _emailController);
     _emailSub = emailStream?.listen((text) {
       setState(() {
         _emailController.value = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
@@ -53,7 +54,8 @@ class _InputScreenState extends State<InputScreen> {
     });
 
     Stream phoneNumStream = await FlutterAutofill.registerWidget(
-        context, ID_PHONE_NUM_INPUT, _phoneNumFocus, _phoneNumKey, [FlutterAutofill.AUTOFILL_HINT_PHONE], FlutterAutofill.AUTOFILL_TYPE_TEXT);
+        context, ID_PHONE_NUM_INPUT, _phoneNumFocus, _phoneNumKey, [FlutterAutofill.AUTOFILL_HINT_PHONE], FlutterAutofill.AUTOFILL_TYPE_TEXT,
+        textController: _phoneNumController);
     _phoneSub = phoneNumStream?.listen((text) {
       setState(() {
         _phoneNumController.value = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
@@ -140,7 +142,7 @@ class _InputScreenState extends State<InputScreen> {
                       InputDecoration(hintText: "Please enter your phone number", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),
                   style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
                   autocorrect: false,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   textInputAction: TextInputAction.next,
                   maxLines: 1,
                 ),

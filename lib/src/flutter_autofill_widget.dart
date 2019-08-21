@@ -2,11 +2,12 @@ part of flutter_autofill;
 
 class Autofill extends StatefulWidget {
   final Widget child;
-  List<String> autofillHints;
+  final List<String> autofillHints;
   final ValueChanged<dynamic> onAutofilled;
   final int autofillType;
+  final TextEditingController textController;
 
-  Autofill({@required this.child, @required this.autofillHints, @required this.onAutofilled, @required this.autofillType});
+  Autofill({@required this.child, @required this.autofillHints, @required this.onAutofilled, @required this.autofillType, this.textController});
 
   @override
   State<StatefulWidget> createState() => _AutofillState();
@@ -36,7 +37,8 @@ class _AutofillState extends State<Autofill> {
     if (!mounted) return;
 
     String id = 'af_widget${++incrementingID}';
-    Stream stream = await FlutterAutofill.registerWidget(context, id, _afFocus, _afKey, widget.autofillHints, widget.autofillType);
+    Stream stream = await FlutterAutofill.registerWidget(context, id, _afFocus, _afKey, widget.autofillHints, widget.autofillType,
+        textController: widget.textController);
     _subscription = stream?.listen((afValue) {
       widget.onAutofilled(afValue);
     });

@@ -4,6 +4,7 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.autofill.AutofillManager;
+import android.view.autofill.AutofillValue;
 
 import com.applaudsoft.flutter_autofill.virtual_view.AutoFillDummyView;
 import com.applaudsoft.flutter_autofill.virtual_view.DateItem;
@@ -59,6 +60,10 @@ public class FlutterAutofillPlugin implements MethodCallHandler {
             Map<String, ?> args = call.arguments();
             boolean res = updateWidgetCoordinates(args);
             result.success(res);
+        } else if (call.method.equals("updateWidgetValue")) {
+            Map<String, ?> args = call.arguments();
+            updateWidgetValue(args);
+            result.success(null);
         } else if (call.method.equals("notifyFocus")) {
             Map<String, ?> args = call.arguments();
             notifyFocus(args);
@@ -72,6 +77,22 @@ public class FlutterAutofillPlugin implements MethodCallHandler {
         } else {
             result.notImplemented();
         }
+    }
+
+    private void updateWidgetValue(Map<String, ?> args) {
+        if (autoFillUnavailable()) {
+            return;
+        }
+        final String idEntry = (String) args.get("id");
+        Object value = args.get("value");
+        int id = getVirtualIdForEntryId(idEntry);
+        AutofillValue afValue;
+        if (value instanceof Long) {
+            afValue = AutofillValue.forDate((Long) value);
+        } else {
+            afValue = AutofillValue.forText(String.valueOf(value));
+        }
+        afm.notifyValueChanged(dummyView, id, afValue);
     }
 
     private void handleCancel() {

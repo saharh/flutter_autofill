@@ -3,8 +3,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_autofill/flutter_autofill.dart';
 
-class AutofillWidgetScreen extends StatelessWidget {
+class AutofillWidgetScreen extends StatefulWidget {
+  @override
+  _AutofillWidgetScreenState createState() => _AutofillWidgetScreenState();
+}
+
+class _AutofillWidgetScreenState extends State<AutofillWidgetScreen> {
   final _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +45,7 @@ class AutofillWidgetScreen extends StatelessWidget {
                 },
                 autofillHints: [FlutterAutofill.AUTOFILL_HINT_EMAIL_ADDRESS],
                 autofillType: FlutterAutofill.AUTOFILL_TYPE_TEXT,
+                textController: _emailController,
                 child: TextField(
                   controller: _emailController,
                   decoration: InputDecoration(hintText: "Please enter your email", hasFloatingPlaceholder: false, border: UnderlineInputBorder()),

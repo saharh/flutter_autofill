@@ -8,7 +8,7 @@ Supports all Android [hint types](https://developer.android.com/reference/androi
 
 ```yaml
 dependencies:
-  flutter_autofill: ^0.4.0
+  flutter_autofill: ^0.4.1
 ```
 
 ## Usage

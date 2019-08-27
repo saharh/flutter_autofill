@@ -21,19 +21,31 @@ class FlutterAutofill {
   static const AUTOFILL_HINT_POSTAL_ADDRESS = "postalAddress";
   static const AUTOFILL_HINT_POSTAL_CODE = "postalCode";
   static const AUTOFILL_HINT_CREDIT_CARD_NUMBER = "creditCardNumber";
-  static const AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE = "creditCardSecurityCode";
-  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE = "creditCardExpirationDate";
-  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH = "creditCardExpirationMonth";
-  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR = "creditCardExpirationYear";
-  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY = "creditCardExpirationDay";
+  static const AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE =
+      "creditCardSecurityCode";
+  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE =
+      "creditCardExpirationDate";
+  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH =
+      "creditCardExpirationMonth";
+  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR =
+      "creditCardExpirationYear";
+  static const AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY =
+      "creditCardExpirationDay";
 
   static Stream<dynamic> get textStream {
     return _textStreamController.stream;
   }
 
   static Future<Stream<dynamic>> registerWidget(
-      BuildContext context, String id, FocusNode focusNode, GlobalKey key, List<String> autofillHints, int autofillType,
-      {TextEditingController textController, bool editable = true, bool sensitiveData = true}) async {
+      BuildContext context,
+      String id,
+      FocusNode focusNode,
+      GlobalKey key,
+      List<String> autofillHints,
+      int autofillType,
+      {TextEditingController textController,
+      bool editable = true,
+      bool sensitiveData = true}) async {
     if (!Platform.isAndroid) {
       return null;
     }
@@ -56,7 +68,9 @@ class FlutterAutofill {
       });
     });
     await _updateWidgetCoordinates(context, id, key);
-    return _textStreamController.stream.where((data) => data["id"] == id).map((data) => data["value"]);
+    return _textStreamController.stream
+        .where((data) => data["id"] == id)
+        .map((data) => data["value"]);
   }
 
   static Future<void> cancel() async {
@@ -67,7 +81,8 @@ class FlutterAutofill {
     await _channel.invokeMethod('commit');
   }
 
-  static Future<bool> _updateWidgetCoordinates(BuildContext context, String id, GlobalKey key) async {
+  static Future<bool> _updateWidgetCoordinates(
+      BuildContext context, String id, GlobalKey key) async {
     if (key.currentState?.mounted != true) {
       return false;
     }
@@ -107,7 +122,8 @@ class FlutterAutofill {
 
   static void _registerTextListenerIfNeeded() {
     if (!_registeredTextListener) {
-      defaultBinaryMessenger.setMessageHandler(_AF_CHANNEL, (ByteData message) async {
+      defaultBinaryMessenger.setMessageHandler(_AF_CHANNEL,
+          (ByteData message) async {
         final buffer = message.buffer;
         final decodedStr = utf8.decode(buffer.asUint8List());
         var decodedJSON = jsonDecode(decodedStr);

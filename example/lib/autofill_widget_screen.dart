@@ -1,5 +1,3 @@
-//Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => AddressInputPage(currentOffer, _address)));
-
 import 'package:flutter/material.dart';
 import 'package:flutter_autofill/flutter_autofill.dart';
 

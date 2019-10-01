@@ -110,6 +110,7 @@ public class FlutterAutofillPlugin implements MethodCallHandler {
     }
 
     private void init() {
+        if (registrar.activity() == null) return;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             View decorView = registrar.activity().getWindow().getDecorView();
             ViewGroup rootView = decorView.findViewById(android.R.id.content);

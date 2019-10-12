@@ -12,7 +12,7 @@ class Autofill extends StatefulWidget {
       @required this.autofillHints,
       @required this.onAutofilled,
       @required this.autofillType,
-      this.textController});
+      @required this.textController});
 
   @override
   State<StatefulWidget> createState() => _AutofillState();

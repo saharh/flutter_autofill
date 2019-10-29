@@ -1,6 +1,6 @@
 name: flutter_autofill
 description: Provides Android Autofill support for Flutter text fields. Supports all Android hint types.
-version: 0.4.1
+version: 0.4.2
 author: Sahar Haddad <saharh@applaud-software.com>
 homepage: https://github.com/saharh/flutter_autofill
 
